@@ -105,5 +105,32 @@ This configuration ensures that the Java application is built and tested automat
 
 
 
-Project key: devops-marionddlr_project
-Organization key: devops-marionddlr
+Document your quality gate configuration.
+
+A Quality Gate in SonarCloud ensures your code meets specific quality metrics, such as code coverage, duplications, code smells, bugs, and security vulnerabilities. This helps maintain high code quality and security standards.
+
+Security Rating on New Code:
+Required: A
+Current: D (Failed)
+
+Coverage:
+Required: ≥ 80.0%
+Current: 53.64%
+Status: Failed
+
+Security Hotspots Reviewed:
+Required: 100%
+Current: 0.0%
+Status: Failed
+
+Duplications:
+Required: ≤ 3.0%
+Current: 0.0%
+Status: Passed
+
+New Issues:
+Number of New Issues: 2
+Status: Failed
+
+
+
