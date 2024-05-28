@@ -1,64 +1,62 @@
-name: CI devops 2024
+name: CI DevOps 2024
+
 on:
-  # To begin, you want to launch this job in main and develop
   push:
-    branches: #TODO 
+    branches:
+      - develop
       - main
   pull_request:
 
 jobs:
-  test-backend: 
+  test-backend:
     runs-on: ubuntu-22.04
     steps:
-      # Checkout your GitHub code using actions/checkout@v2.5.0
-      - uses: actions/checkout@v2.5.0
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-      # Do the same with another action (actions/setup-java@v3) that enables to setup JDK 17
       - name: Set up JDK 17
-        #TODO
         uses: actions/setup-java@v3
         with:
           java-version: '17'
           distribution: 'adopt'
 
-      # Finally, build your app with the latest command
       - name: Build and test with Maven
         run: |
           cd Backend/simple-api-student-main
-          mvn -B verify sonar:sonar -Dsonar.projectKey=devops-marionddlr_project -Dsonar.organization=devops-marionddlr -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=${{ secrets.SONAR_TOKEN }}  --file ./pom.xml
+          mvn -B verify sonar:sonar \
+            -Dsonar.projectKey=devops-marionddlr_project \
+            -Dsonar.organization=devops-marionddlr \
+            -Dsonar.host.url=https://sonarcloud.io \
+            -Dsonar.login=${{ secrets.SONAR_TOKEN }} \
+            --file ./pom.xml
 
-  # Define job to build and publish Docker image
   build-and-push-docker-image:
     needs: test-backend
-    # Run only when code is compiling and tests are passing
+    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-22.04
 
-    # Steps to perform in job
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2.5.0
+        uses: actions/checkout@v3
 
       - name: Login to DockerHub
-        run: docker login -u ${{secrets.DOCKER_USERNAME}} -p ${{secrets.DOCKER_TOKEN}}
+        run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_TOKEN }}
 
       - name: Build image and push backend
         uses: docker/build-push-action@v3
         with:
-          # Relative path to the place where source code with Dockerfile is located
           context: ./Backend/simple-api-student-main
-          # Tags has to be all lower-case
-          tags: ${{secrets.DOCKER_USERNAME}}/tp-devops-simple-api:latest
+          tags: ${{ secrets.DOCKER_USERNAME }}/tp-devops-simple-api:latest
 
       - name: Build image and push database
-        # DO the same for database
         uses: docker/build-push-action@v3
         with:
           context: ./Postgres
-          tags: ${{secrets.DOCKER_USERNAME}}/tp-devops-database:latest
+          tags: ${{ secrets.DOCKER_USERNAME }}/tp-devops-database:latest
 
       - name: Build image and push httpd
-        # DO the same for httpd
         uses: docker/build-push-action@v3
         with:
           context: ./HTTP
-          tags: ${{secrets.DOCKER_USERNAME}}/tp-devops-httpd:latest
+          tags: ${{ secrets.DOCKER_USERNAME }}/tp-devops-httpd:latest
+
