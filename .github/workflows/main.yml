@@ -62,7 +62,3 @@ jobs:
         with:
           context: ./HTTP
           tags: ${{secrets.DOCKER_USERNAME}}/tp-devops-httpd:latest
-
-      mvn -B verify sonar:sonar -Dsonar.projectKey=devops-2024 -Dsonar.organization=devops-school -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=${{ secrets.SONAR_TOKEN }}  --file ./simple-api/pom.xml
-
-
