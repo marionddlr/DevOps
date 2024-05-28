@@ -88,3 +88,11 @@ Portability: Use the same images across different environments and machines.
 Version Control: Track different versions of your images for better management and rollback capabilities.
 
 By storing images in an online repository, you enhance your development workflow, enabling easier sharing, scaling, and deployment of your applications.
+
+
+
+2-1 What are testcontainers?
+
+Testcontainers is a Java library that simplifies integration testing by providing lightweight, disposable instances of common databases and other services running in Docker containers. It streamlines test setup, ensures consistency across environments, and promotes test isolation and reproducibility.
+
+
