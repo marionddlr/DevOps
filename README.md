@@ -102,3 +102,8 @@ Testcontainers is a Java library that simplifies integration testing by providin
 This GitHub Actions configuration defines a workflow named "CI devops 2024". It is triggered on push events to the main branch and on pull requests. The workflow consists of a single job named "test-backend" that runs on an Ubuntu 22.04 runner. The job performs three steps: it checks out the code, sets up JDK 17, and builds and tests the Java application using Maven.
 
 This configuration ensures that the Java application is built and tested automatically whenever code changes are pushed to the main branch or a pull request is opened.
+
+
+
+Project key: devops-marionddlr_project
+Organization key: devops-marionddlr
