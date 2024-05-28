@@ -25,7 +25,7 @@ jobs:
       - name: Build and test with Maven
         run: |
           cd Backend/simple-api-student-main
-          mvn -B verify sonar:sonar -Dsonar.projectKey=devops-2024 -Dsonar.organization=devops-school -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=${{ secrets.SONAR_TOKEN }}  --file ./Backend/simple-api-student-main/pom.xml
+          mvn -B verify sonar:sonar -Dsonar.projectKey=devops-2024 -Dsonar.organization=devops-school -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=${{ secrets.SONAR_TOKEN }}  --file ./pom.xml
 
   # Define job to build and publish Docker image
   build-and-push-docker-image:
