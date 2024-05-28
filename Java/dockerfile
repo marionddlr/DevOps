@@ -1,0 +1,4 @@
+FROM openjdk:17-jdk-slim
+COPY Main.class /usr/src/myapp/Main.class
+WORKDIR /usr/src/myapp
+CMD ["java", "Main"]
