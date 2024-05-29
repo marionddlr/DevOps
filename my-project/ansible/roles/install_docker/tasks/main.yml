@@ -1,17 +1,17 @@
 ---
-# Install Docker
 - name: Install device-mapper-persistent-data
   yum:
     name: device-mapper-persistent-data
     state: latest
-
+  
 - name: Install lvm2
   yum:
     name: lvm2
     state: latest
 
-- name: Add Docker repository
-  command: yum-config-manager --add-repo=https://download.docker.com/linux/centos/docker-ce.repo
+- name: add repo docker
+  command:
+    cmd: sudo yum-config-manager --add-repo=https://download.docker.com/linux/centos/docker-ce.repo
 
 - name: Install Docker
   yum:
@@ -23,16 +23,19 @@
     name: python3
     state: present
 
-- name: Install Docker with Python 3
+- name: Install docker with Python 3
   pip:
     name: docker
     executable: pip3
   vars:
     ansible_python_interpreter: /usr/bin/python3
 
-- name: Ensure Docker is running
-  service:
-    name: docker
-    state: started
+- name: Make sure Docker is running
+  service: name=docker state=started
   tags: docker
 
+- name: Log in to Docker Hub
+  docker_login:
+    username: marionddlr
+    password: dckr_pat_FJxfZCBipWwEfAEj_ypm2JvmDw4
+    reauthorize: yes
