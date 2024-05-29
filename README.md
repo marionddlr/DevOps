@@ -134,3 +134,71 @@ Status: Failed
 
 
 
+3-1 Document your inventory and base commands
+
+Gathering OS Distribution Information:
+This command uses the setup module to gather information (facts) about the OS distribution of all hosts defined in the inventory.
+ansible all -i inventories/setup.yml -m setup -a "filter=ansible_distribution*"
+ansible: The Ansible command-line tool.
+all: Target all hosts defined in the inventory.
+-i inventories/setup.yml: Specify the inventory file to use.
+-m setup: Use the setup module to gather facts.
+-a "filter=ansible_distribution*": Argument to filter the gathered facts to those matching ansible_distribution*.
+
+Output: 
+marion.dumasdelaroque.takima.cloud | SUCCESS => {
+    "ansible_facts": {
+        "ansible_distribution": "CentOS",
+        "ansible_distribution_file_parsed": true,
+        "ansible_distribution_file_path": "/etc/redhat-release",
+        "ansible_distribution_file_variety": "RedHat",
+        "ansible_distribution_major_version": "7",
+        "ansible_distribution_release": "Core",
+        "ansible_distribution_version": "7.9",
+        "discovered_interpreter_python": "/usr/bin/python"
+    },
+    "changed": false
+}
+
+Removing Apache httpd Server
+This command uses the yum module to remove the Apache httpd server from all hosts. The --become flag is used to gain the necessary privileges to remove the package.
+ansible all -i inventories/setup.yml -m yum -a "name=httpd state=absent" --become
+ansible: The Ansible command-line tool.
+all: Target all hosts defined in the inventory.
+-i inventories/setup.yml: Specify the inventory file to use.
+-m yum: Use the yum module to manage packages.
+-a "name=httpd state=absent": Argument specifying the package (httpd) and the desired state (absent).
+--become: Elevate privileges to perform the package removal.
+
+Output:
+marion.dumasdelaroque.takima.cloud | SUCCESS => {
+    "ansible_facts": {
+        "discovered_interpreter_python": "/usr/bin/python"
+    },
+    "changed": false,
+    "msg": "",
+    "rc": 0,
+    "results": [
+        "httpd is not installed"
+    ]
+}
+
+
+
+3-2 Document your playbook
+
+cd my-project/ansible
+ansible-galaxy init roles/docker
+cd roles/docker
+rm -rf defaults files meta templates vars
+ansible-playbook -i inventories/setup.yml playbook.yml
+
+The playbook playbook.yml is designed to apply the docker role to all hosts defined in the Ansible inventory. The purpose of the docker role is to install and configure Docker on CentOS hosts.
+playbook.yml: Main playbook that applies the docker role to all hosts.
+setup.yml: Inventory file defining hosts and groups.
+roles/docker/tasks/main.yml: Contains tasks to install and configure Docker.
+
+
+
+Document your docker_container tasks configuration
+ansible-playbook -i inventories/setup.yml playbook.yml
