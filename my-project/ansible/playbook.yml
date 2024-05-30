@@ -4,8 +4,8 @@
   become: true
 
   roles:
-    - create_network
     - install_docker
+    - create_network
     - launch_app
     - launch_database
     - launch_proxy
