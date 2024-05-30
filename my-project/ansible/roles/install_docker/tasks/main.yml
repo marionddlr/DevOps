@@ -39,5 +39,3 @@
     username: marionddlr
     password: dckr_pat_FJxfZCBipWwEfAEj_ypm2JvmDw4
     reauthorize: yes
-    vars:
-    ansible_python_interpreter: /usr/bin/python3
