@@ -18,7 +18,7 @@ jobs:
     - name: Copy Ansible files
       run: |
         mkdir -p /tmp/ansible
-        cp -r ansible/* /tmp/ansible/
+        cp -r /* /tmp/ansible/
 
     - name: Run Ansible Playbook
       run: |
