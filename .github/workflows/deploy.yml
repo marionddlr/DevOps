@@ -2,35 +2,34 @@ name: Deploy to Production
 
 on:
   workflow_run:
-    workflows: ["CI devops 2024"]
+    workflows: ["CI DevOps 2024"]
     types:
       - completed
-    branches: 
+    branches:
       - main
 
 jobs:
-  run-main-playbook:
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+  run-ansible-playbook:
     runs-on: ubuntu-latest
-
+    
     steps:
     - name: Checkout repository
       uses: actions/checkout@v2
 
-    - name: Copy SSH key
+    - name: SSH
+      uses: webfactory/ssh-agent@v0.5.3  # Use the webfactory/ssh-agent action to set up SSH
+      with:
+        ssh-private-key: ${{ secrets.ANSIBLE_TOKEN }} 
+        
+    - name: Add SSH known hosts
       run: |
         mkdir -p ~/.ssh
-        cp ~/id_rsa ~/.ssh/id_rsa
-        chmod 600 ~/.ssh/id_rsa
-        ssh-keyscan -H yourserver.com >> ~/.ssh/known_hosts
+        ssh-keyscan -H marion.dumasdelaroque.takima.cloud >> ~/.ssh/known_hosts
 
     - name: Set up Ansible
       run: |
-        sudo apt update
-        sudo apt install ansible -y
-
-    - name: Run main playbook
-      run: |
-        ansible-playbook -i inventories/setup.yml my-project/ansible/playbook.yml
-      continue-on-error: false
-
+        sudo apt-get update
+        sudo apt-get install -y ansible
+ 
+    - name: Run Ansible Playbook
+      run: ansible-playbook -i my-project/ansible/inventories/setup.yml my-project/ansible/playbook.yml
