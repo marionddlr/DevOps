@@ -199,6 +199,5 @@ setup.yml: Inventory file defining hosts and groups.
 roles/docker/tasks/main.yml: Contains tasks to install and configure Docker.
 
 
-
 Document your docker_container tasks configuration
 ansible-playbook -i inventories/setup.yml playbook.yml
