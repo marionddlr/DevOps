@@ -10,16 +10,20 @@ on:
 
 jobs:
   run-main-playbook:
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
 
     steps:
     - name: Checkout repository
       uses: actions/checkout@v2
 
-    - name: Set up SSH
-      uses: webfactory/ssh-agent@v0.5.3  # Use the webfactory/ssh-agent action to set up SSH
-      with:
-        ssh-private-key: ${{ secrets.ANSIBLE_TOKEN }}  # Set the SSH private key from GitHub repository secrets
+    - name: Copy SSH key
+      run: |
+        mkdir -p ~/.ssh
+        cp /path/to/your/id_rsa ~/.ssh/id_rsa
+        chmod 600 ~/.ssh/id_rsa
+        ssh-keyscan -H yourserver.com >> ~/.ssh/known_hosts
+
     - name: Set up Ansible
       run: |
         sudo apt update
@@ -28,4 +32,5 @@ jobs:
     - name: Run main playbook
       run: |
         ansible-playbook -i inventories/setup.yml my-project/ansible/playbook.yml
-      continue-on-error: false  # Ensure this step fails the job if it fails
+      continue-on-error: false
+
