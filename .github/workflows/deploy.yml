@@ -1,0 +1,29 @@
+name: Deploy to Production
+
+on:
+  workflow_run:
+    workflows: ["CI DevOps 2024"]
+    types:
+      - completed
+
+jobs:
+  deploy:
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Copy Ansible files
+      run: |
+        mkdir -p /tmp/ansible
+        cp -r ansible/* /tmp/ansible/
+
+    - name: Run Ansible Playbook
+      run: |
+        ansible-playbook -i /tmp/ansible/inventories/setup.yml /tmp/ansible/playbook.yml
+      env:
+        ANSIBLE_HOST_KEY_CHECKING: 'False'
+        ANSIBLE_VAULT_PASSWORD_FILE: /tmp/ansible/.vault_pass
+
