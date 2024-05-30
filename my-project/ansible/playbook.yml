@@ -9,3 +9,6 @@
     - launch_app
     - launch_database
     - launch_proxy
+
+  vars:
+    ansible_python_interpreter: /usr/bin/python3
