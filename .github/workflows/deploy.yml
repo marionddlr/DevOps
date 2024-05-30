@@ -15,15 +15,6 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v2
 
-    - name: Copy Ansible files
-      run: |
-        mkdir -p /tmp/ansible
-        cp -r /* /tmp/ansible/
-
     - name: Run Ansible Playbook
       run: |
-        ansible-playbook -i /tmp/ansible/inventories/setup.yml /tmp/ansible/playbook.yml
-      env:
-        ANSIBLE_HOST_KEY_CHECKING: 'False'
-        ANSIBLE_VAULT_PASSWORD_FILE: /tmp/ansible/.vault_pass
-
+        ansible-playbook -i /ansible/inventories/setup.yml /ansible/playbook.yml
